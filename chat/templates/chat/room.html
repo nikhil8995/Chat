@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with {{ other_user.username }} - MsgApp</title>
+    <link rel="stylesheet" href="/static/chat/css/style.css">
+</head>
+<body class="dark-mode">
+    <div class="container">
+        <header>
+            <a href="/" class="back-btn">&larr; Back</a>
+            <h2>Chat with {{ other_user.username }}</h2>
+        </header>
+        <div class="chat-box" id="chat-box">
+            {% for msg in messages %}
+                <div class="message {% if msg.sender == request.user %}sent{% else %}received{% endif %}">
+                    <span class="sender">{{ msg.sender.username }}</span>
+                    <span class="content">{{ msg.content }}</span>
+                    <span class="timestamp">{{ msg.timestamp|date:'H:i' }}</span>
+                </div>
+            {% endfor %}
+        </div>
+        <form id="send-form" class="send-form">
+            {% csrf_token %}
+            <input type="hidden" name="receiver" value="{{ other_user.username }}">
+            <input type="text" name="content" id="msg-input" placeholder="Type a message..." required autocomplete="off">
+            <button type="submit">Send</button>
+        </form>
+    </div>
+    <script src="/static/chat/js/chat.js"></script>
+</body>
+</html> 
